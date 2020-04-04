@@ -1,3 +1,7 @@
+
+#   Map that tracks the daily COVID-19 positive cases by each state in the USA 
+#   author: Gino Villalpando GinoVillalpandoWork@gmail.com
+ 
 import folium
 import requests
 import pandas as pd
@@ -28,7 +32,7 @@ folium.Choropleth(
     fill_opacity=0.7,
     line_opacity=0.2,
     legend_name='Positive Covid Results #'
-).add_to(MyMap)
+)
 
 folium.LayerControl().add_to(MyMap)
 
