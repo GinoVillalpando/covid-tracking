@@ -5,7 +5,7 @@ import os
 
 states = os.path.join('data', 'states.json')
 url = 'https://covidtracking.com/api/v1/states'
-covid_data = f'{url}/current.csv'
+covid_data = f'{url}/daily.csv'
 
 # this block of code was checking the API for what was stored in the data
 # api = requests.get(f'{url}')
