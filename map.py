@@ -1,13 +1,22 @@
 import folium
 import requests
 
-api1 = requests.get("https://randomuser.me/api/?results=10")
+url = 'https://covidtracking.com/api/states'
 
-data = api1.json()
+api = requests.get(f'{url}')
 
-for user in data['results']:
-    print(user['name']['first'])
 
-m = folium.Map(location=[35.0844, -106.6504], zoom_start=12)
+data = api.json()
+
+for results in data:
+    print(results['state'])
+    print(results['positive'])
+
+m = folium.Map(location=[48, -102], zoom_start=3.5)
+
+m.choropleth(
+    geo_data=states
+)
+
 
 m.save('map.html')
