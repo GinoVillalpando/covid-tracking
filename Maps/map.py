@@ -32,9 +32,7 @@ folium.Choropleth(
     fill_opacity=0.7,
     line_opacity=0.2,
     legend_name='Positive Covid Results #'
-)
-
-folium.LayerControl().add_to(MyMap)
+).add_to(MyMap)
 
 
 MyMap.save('map.html')
