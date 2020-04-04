@@ -1,8 +1,5 @@
-import requests
-import json
+import folium
 
-response = requests.get('https://randomuser.me/api/?results=10')
+m = folium.Map(location=[35.0844, -106.6504], zoom_start=12)
 
-data = response.json()
-
-print(response.data)
+m.save('map.html')
