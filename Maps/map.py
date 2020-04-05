@@ -10,7 +10,7 @@ states = os.path.join('data', 'states.json')
 url = 'https://covidtracking.com/api/v1/states'
 covid_data = pd.read_csv(f'{url}/daily.csv')
 
-bins = list(covid_data['positive'].quantile([0, 0.1, 0.2, 0.3, 0.4, 0.5]))
+bins = list(covid_data['positive'].quantile([0, 0.1, 0.2, 0.3, 0.4, 0.45]))
 
 # this block of code was checking the API for what was stored in the data
 # api = requests.get(f'{url}')
