@@ -1,6 +1,6 @@
 
 #   Map that tracks the daily COVID-19 positive cases by each state in the USA 
-#   author: Gino Villalpando GinoVillalpandoWork@gmail.com
+#   author: @Gino Villalpando GinoVillalpandoWork@gmail.com
  
 import folium
 import pandas as pd
@@ -8,9 +8,9 @@ import os
 
 states = os.path.join('data', 'states.json')
 url = 'https://covidtracking.com/api/v1/states'
-covid_data = pd.read_csv(f'{url}/daily.csv')
+covid_data = pd.read_csv(f'{url}/current.csv')
 
-bins = list(covid_data['positive'].quantile([0, 0.1, 0.2, 0.3, 0.4, 0.45]))
+bins = list(covid_data['positive'].quantile([0, 0.25, 0.5, 0.75, 1]))
 
 # this block of code was checking the API for what was stored in the data
 # api = requests.get(f'{url}')
@@ -29,7 +29,7 @@ folium.Choropleth(
     data=covid_data,
     columns=['state', 'positive'],
     key_on='feature.id',
-    fill_color='OrRd',
+    fill_color='BuPu',
     fill_opacity=0.8,
     line_opacity=0.4,
     legend_name='Positive COVID-19 Results as of today #',
@@ -37,6 +37,6 @@ folium.Choropleth(
     reset=True
 ).add_to(MyMap)
 
-folium.LayerControl().add_to(MyMap)
+# folium.LayerControl().add_to(MyMap)
 
 MyMap.save('map.html')
