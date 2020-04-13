@@ -10,7 +10,7 @@ states = os.path.join('data', 'states.json')
 url = 'https://covidtracking.com/api/v1/states'
 covid_data = pd.read_csv(f'{url}/current.csv')
 
-bins = list(covid_data['positive'].quantile([0, 0.14, 0.28, 0.42, 0.57, 0.71, 0.85, 1]))
+bins = list(covid_data['positive'].quantile([0, 0.05, 0.14, 0.30, 0.80, 0.98, 0.99, 1]))
 
 # create the map at given location with a current value for zoom using folium
 MyMap = folium.Map(location=[48, -102], zoom_start=3)
