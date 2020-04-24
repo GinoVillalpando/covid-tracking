@@ -7,7 +7,7 @@ import pandas as pd
 import os
 
 states = os.path.join('data', 'states.json')
-url = 'https://covidtracking.com/api/v1/states'
+url = 'https://covidtracking.com/api/v1/states' 
 covid_data = pd.read_csv(f'{url}/current.csv')
 
 bins = list(covid_data['positive'].quantile([0, 0.05, 0.14, 0.30, 0.80, 0.98, 0.99, 1]))
