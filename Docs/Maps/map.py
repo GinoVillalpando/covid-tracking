@@ -31,8 +31,9 @@ Choropleth = folium.Choropleth(
     reset=True
 ).add_to(MyMap)
 
-Choropleth.add_child(folium.Popup(
-    '{}: {} Positive cases'.format(covid_data['state'], covid_data['positive'])
+for i in range(len(covid_data)):
+    Choropleth.add_child(folium.Popup(
+    '{}: {} Positive cases'.format(covid_data['state'][i], covid_data['positive'][i])
 
 ))
 
