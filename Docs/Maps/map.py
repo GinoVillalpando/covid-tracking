@@ -31,10 +31,10 @@ Choropleth = folium.Choropleth(
     reset=True
 ).add_to(MyMap)
 
-for i in range(len(covid_data)):
+for cases in range(len(states)):
+    # if states['id'] == covid_data['state']:
     Choropleth.add_child(folium.Popup(
-    '{}: {} Positive cases'.format(covid_data['state'][i], covid_data['positive'][i])
-
+    '{}: {} Positive cases'.format(covid_data['state'][cases], covid_data['positive'][cases])
 ))
 
 # add layercontrol that will disable/enable choropleth 
