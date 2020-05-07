@@ -5,10 +5,14 @@
 import folium
 import pandas as pd
 import os
+import geopandas
 
 states = os.path.join('data', 'states.json')
+geostate = geopandas.read_file(states, driver='GeoJSON')
 url = 'https://covidtracking.com/api/v1/states' 
 covid_data = pd.read_csv(f'{url}/current.csv')
+
+geostate.rename(columns={'id': 'state'}, inplace=True)
 
 bins = list(covid_data['positive'].quantile([0, 0.25, 0.8, 0.97, 0.98, 0.985, 0.99, 0.995, 1]))
 
@@ -31,10 +35,11 @@ Choropleth = folium.Choropleth(
     reset=True
 ).add_to(MyMap)
 
-for cases in range(len(states)):
-    # if states['id'] == covid_data['state']:
-    Choropleth.add_child(folium.Popup(
-    '{}: {} Positive cases'.format(covid_data['state'][cases], covid_data['positive'][cases])
+for cases in range(len(covid_data)):
+    print(geostate)
+    if geostate['state'] == covid_data['state']:
+        Choropleth.add_child(folium.Popup(
+        '{}: {} Positive cases'.format(covid_data['state'][cases], covid_data['positive'][cases])    
 ))
 
 # add layercontrol that will disable/enable choropleth 
