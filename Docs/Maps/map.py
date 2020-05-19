@@ -6,41 +6,75 @@ import folium
 import pandas as pd
 import os
 import geopandas
+import branca.colormap as cm 
 
 states = os.path.join('data', 'states.json')
 geostate = geopandas.read_file(states, driver='GeoJSON')
 url = 'https://covidtracking.com/api/v1/states' 
 covid_data = pd.read_csv(f'{url}/current.csv')
 
-geostate.rename(columns={'id': 'state'}, inplace=True)
+geostate = geostate.set_index('id')
+covid_data = covid_data.set_index('state')
 
-bins = list(covid_data['positive'].quantile([0, 0.25, 0.8, 0.97, 0.98, 0.985, 0.99, 0.995, 1]))
+print(covid_data)
+
+
+
+
+quantiles = [0, 0.25, 0.5, 0.75, 0.98, 1]
+bins = list(covid_data['positive'].quantile(quantiles))
+
+colormap1 = cm.LinearColormap(colors=['Blue', 'Purple'], vmin=0, vmax=1)
+colormap1
+
+#colormap returns 8 character values buy only accepts 6 characters
+colors = [colormap1(quantile)[0:-2] for quantile in quantiles]
+
+#change NY to black because it's so much worse than everywhere else
+colors = colors[0:-1] + ['#000000']
+
+colormap = cm.LinearColormap(colors=colors, index=bins,
+    vmin=covid_data.positive.min(),
+    vmax=covid_data.positive.max())
+
+
+#Create a dictionay of colors because 'id' is the only property of the feature available when styling
+colordict = covid_data['positive'].apply(colormap)
+
+
+colormap.caption = "Positive Covid Tests"
 
 # create the map at given location with a current value for zoom using folium
 MyMap = folium.Map(location=[48, -102], zoom_start=3)
 
-# create the Choropleth map with the given data in ../data/states.json
-Choropleth = folium.Choropleth(
-    geo_data=states,
-    name='choropleth',
-    data=covid_data,
-    columns=['state', 'positive'],
-    key_on='feature.id',
-    fill_color='BuPu',
-    fill_opacity=0.8,
-    line_opacity=0.4,
-    legend_name='Positive COVID-19 Results as of today',
-    highlight=True,
-    bins=bins,
-    reset=True
+State_Layer = folium.GeoJson(
+    covid_data,
+    name='States',
+    style_function = lambda feature: {
+        'fillColor': 'white',
+        'fillOpacity': 0,
+        'color': 'black',
+        'weight': 1,
+    },
+    tooltip=folium.GeoJsonTooltip(
+        fields=['name', 'positive'],
+        aliases=['State', 'Positive Tests'],
+        localize=True
+    )
 ).add_to(MyMap)
 
-for cases in range(len(covid_data)):
-    print(geostate)
-    if geostate['state'] == covid_data['state']:
-        Choropleth.add_child(folium.Popup(
-        '{}: {} Positive cases'.format(covid_data['state'][cases], covid_data['positive'][cases])    
-))
+Positive_Layer = folium.GeoJson(
+    geostate,
+    name='Positive Tests',
+    style_function=lambda feature: {
+        'fillColor': colordict[feature['id']],
+        'fillOpacity': 0.5,
+        'color': 'black',
+        'weight': 1,
+    }
+).add_to(MyMap)
+
+MyMap.add_child(colormap)
 
 # add layercontrol that will disable/enable choropleth 
 folium.LayerControl().add_to(MyMap)
