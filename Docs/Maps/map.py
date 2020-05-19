@@ -14,15 +14,18 @@ url = 'https://covidtracking.com/api/v1/states'
 covid_data = pd.read_csv(f'{url}/current.csv')
 
 geostate = geostate.set_index('id')
-covid_data = covid_data.set_index('state')
+covid_data_indexed = covid_data.set_index('state')
 
-print(covid_data)
+covid_data_indexed.drop_duplicates(inplace=True)
+
+print(covid_data_indexed)
 
 
+geostatedata = pd.concat([geostate, covid_data_indexed], axis=1, join='inner')
 
 
 quantiles = [0, 0.25, 0.5, 0.75, 0.98, 1]
-bins = list(covid_data['positive'].quantile(quantiles))
+bins = list(geostatedata['positive'].quantile(quantiles))
 
 colormap1 = cm.LinearColormap(colors=['Blue', 'Purple'], vmin=0, vmax=1)
 colormap1
@@ -34,12 +37,12 @@ colors = [colormap1(quantile)[0:-2] for quantile in quantiles]
 colors = colors[0:-1] + ['#000000']
 
 colormap = cm.LinearColormap(colors=colors, index=bins,
-    vmin=covid_data.positive.min(),
-    vmax=covid_data.positive.max())
+    vmin=geostatedata.positive.min(),
+    vmax=geostatedata.positive.max())
 
 
 #Create a dictionay of colors because 'id' is the only property of the feature available when styling
-colordict = covid_data['positive'].apply(colormap)
+colordict = geostatedata['positive'].apply(colormap)
 
 
 colormap.caption = "Positive Covid Tests"
@@ -48,7 +51,7 @@ colormap.caption = "Positive Covid Tests"
 MyMap = folium.Map(location=[48, -102], zoom_start=3)
 
 State_Layer = folium.GeoJson(
-    covid_data,
+    geostatedata,
     name='States',
     style_function = lambda feature: {
         'fillColor': 'white',
@@ -64,7 +67,7 @@ State_Layer = folium.GeoJson(
 ).add_to(MyMap)
 
 Positive_Layer = folium.GeoJson(
-    geostate,
+    geostatedata,
     name='Positive Tests',
     style_function=lambda feature: {
         'fillColor': colordict[feature['id']],
