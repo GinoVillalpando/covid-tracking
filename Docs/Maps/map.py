@@ -92,7 +92,7 @@ def covid():
     folium.LayerControl().add_to(MyMap)
 
     # create the maps and insert into a html file
-    MyMap.save('map.html')
+    MyMap.save('index.html')
 
 # execute the script
 covid()
