@@ -79,7 +79,7 @@ def covid():
             'fillColor': 'white',
             'fillOpacity': 0.5,
             'color': 'white',
-            'weight': 1,
+            'weight': 4,
         }
     ).add_to(MyMap)
 
