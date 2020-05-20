@@ -46,6 +46,17 @@ colormap.caption = "Positive Covid Tests"
 # create the map at given location with a current value for zoom using folium
 MyMap = folium.Map(location=[48, -102], zoom_start=3)
 
+Positive_Layer = folium.GeoJson(
+    geostatedata,
+    name='Positive Tests',
+    style_function=lambda feature: {
+        'fillColor': colordict[feature['id']],
+        'fillOpacity': 0.5,
+        'color': 'black',
+        'weight': 1,
+    }
+).add_to(MyMap)
+
 State_Layer = folium.GeoJson(
     geostatedata,
     name='States',
@@ -56,25 +67,13 @@ State_Layer = folium.GeoJson(
         'weight': 1,
     },
     tooltip=folium.GeoJsonTooltip(
-        fields=['name', 'positive'],
-        aliases=['name', 'Positive Tests'],
-        localize=True
-    )
-)
+        fields=['name','positive'],
+        aliases=['State','Positive Tests'],
+        localize=True)
+).add_to(MyMap)
 
-Positive_Layer = folium.GeoJson(
-    geostatedata,
-    name='Positive Tests',
-    style_function=lambda feature: {
-        'fillColor': colordict[feature['id']],
-        'fillOpacity': 0.5,
-        'color': 'black',
-        'weight': 1,
-    }
-)
 
-State_Layer.add_to(MyMap)
-Positive_Layer.add_to(MyMap)
+
 MyMap.add_child(colormap)
 
 # add layercontrol that will disable/enable choropleth 
@@ -82,3 +81,5 @@ folium.LayerControl().add_to(MyMap)
 
 # create the maps and insert into a html file
 MyMap.save('map.html')
+
+MyMap
