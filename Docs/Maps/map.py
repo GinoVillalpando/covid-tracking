@@ -1,4 +1,3 @@
-
 #   Map that tracks the daily COVID-19 positive cases by each state in the USA 
 #   author: @Gino Villalpando GinoVillalpandoWork@gmail.com in collaboration with Kyla Bendt kylabendt@gmail.com
  
@@ -48,7 +47,7 @@ def covid():
     colormap.caption = "Positive Covid Tests"
 
     # create the map at given location with a current value for zoom using folium
-    MyMap = folium.Map(location=[48, -102], zoom_start=3)
+    MyMap = folium.Map(location=[48, -102], zoom_start=3, tiles='CartoDB dark_matter')
 
     # map layer that shows the colors correlating to positive results
     Positive_Layer = folium.GeoJson(
@@ -73,10 +72,12 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name','positive'],
-            aliases=['State','Positive Tests'],
+            fields=['name','positive', 'negative', 'total', 'death'],
+            aliases=['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths'],
             localize=True)
     ).add_to(MyMap)
+
+    folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap').add_to(MyMap)
 
     # add colormap to the map 
     MyMap.add_child(colormap)
