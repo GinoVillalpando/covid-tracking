@@ -66,7 +66,7 @@ def covid():
         Geo_State_Data,
         name='States',
         style_function=lambda feature: {
-            'fillColor': 'white',
+            'fillColor': 'black',
             'fillOpacity': 0,
             'color': 'black',
             'weight': 1,
@@ -74,7 +74,13 @@ def covid():
         tooltip=folium.GeoJsonTooltip(
             fields=['name','positive', 'negative', 'total', 'death'],
             aliases=['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths'],
-            localize=True)
+            localize=True),
+        highlight_function=lambda feature: {
+            'fillColor': 'white',
+            'fillOpacity': 0.5,
+            'color': 'white',
+            'weight': 1,
+        }
     ).add_to(MyMap)
 
     folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap').add_to(MyMap)
