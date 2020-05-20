@@ -18,6 +18,7 @@ covid_data_indexed = covid_data.set_index('state')
 
 geostatedata = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
 
+print(geostatedata.head())
 
 quantiles = [0, 0.25, 0.5, 0.75, 0.98, 1]
 bins = list(geostatedata['positive'].quantile(quantiles))
@@ -48,7 +49,7 @@ MyMap = folium.Map(location=[48, -102], zoom_start=3)
 State_Layer = folium.GeoJson(
     geostatedata,
     name='States',
-    style_function = lambda feature: {
+    style_function=lambda feature: {
         'fillColor': 'white',
         'fillOpacity': 0,
         'color': 'black',
@@ -56,10 +57,10 @@ State_Layer = folium.GeoJson(
     },
     tooltip=folium.GeoJsonTooltip(
         fields=['name', 'positive'],
-        aliases=['State', 'Positive Tests'],
+        aliases=['name', 'Positive Tests'],
         localize=True
     )
-).add_to(MyMap)
+)
 
 Positive_Layer = folium.GeoJson(
     geostatedata,
@@ -70,8 +71,10 @@ Positive_Layer = folium.GeoJson(
         'color': 'black',
         'weight': 1,
     }
-).add_to(MyMap)
+)
 
+State_Layer.add_to(MyMap)
+Positive_Layer.add_to(MyMap)
 MyMap.add_child(colormap)
 
 # add layercontrol that will disable/enable choropleth 
