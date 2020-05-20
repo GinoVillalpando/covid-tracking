@@ -8,20 +8,15 @@ import os
 import geopandas
 import branca.colormap as cm 
 
-states = os.path.join('data', 'states.json')
+states = 'https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json'
 geostate = geopandas.read_file(states, driver='GeoJSON')
 url = 'https://covidtracking.com/api/v1/states' 
 covid_data = pd.read_csv(f'{url}/current.csv')
 
-geostate = geostate.set_index('id')
+geostates = geostate.set_index('id')
 covid_data_indexed = covid_data.set_index('state')
 
-covid_data_indexed.drop_duplicates(inplace=True)
-
-print(covid_data_indexed)
-
-
-geostatedata = pd.concat([geostate, covid_data_indexed], axis=1, join='inner')
+geostatedata = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
 
 
 quantiles = [0, 0.25, 0.5, 0.75, 0.98, 1]
