@@ -4,7 +4,7 @@
     "description": "COVID-19 Tracker for the US",
     "main": "index.js",
     "scripts": {
-      "deploy": "gh-pages -d Docs"
+      "deploy": "gh-pages -d docs"
     },
     "keywords": [],
     "author": "",
