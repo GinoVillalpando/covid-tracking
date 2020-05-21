@@ -40,7 +40,7 @@ def covid():
         vmax=Geo_State_Data.positive.max())
 
 
-    # Create a dictionay of colors because 'id' is the only property of the feature available when styling
+    # Create a dictionary of colors because 'id' is the only property of the feature available when styling
     colordict = Geo_State_Data['positive'].apply(colormap)
 
     # name of legend
