@@ -98,4 +98,4 @@ def covid():
 covid()
 
 # execute the script everyday
-schedule.every().day.at("10:30").do(covid)
+# schedule.every(10).seconds.do(covid)
