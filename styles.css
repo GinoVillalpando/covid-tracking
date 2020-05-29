@@ -5,3 +5,6 @@
     }
 }
 
+.leaflet-container .leaflet-control-attribution {
+    display: none!important;
+}
