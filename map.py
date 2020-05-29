@@ -22,7 +22,7 @@ def covid():
     Geo_State_Data = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
 
     # quantiles that the colormap uses for color legend
-    quantiles = [0, 0.25, 0.8, 0.97, 0.98, 0.985, 0.99, 0.995, 1]
+    quantiles = [0, 0.8, 0.85, 0.90, 0.97, 1]
     bins = list(Geo_State_Data['positive'].quantile(quantiles))
 
     # create the colormap with given hex colors
@@ -35,7 +35,7 @@ def covid():
     colors = colors[0:-1] + ['#8d3f9c']
 
 
-    colormap = cm.LinearColormap(colors=colors, index=bins,
+    colormap = cm.LinearColormap(colors=colors,
         vmin=Geo_State_Data.positive.min(),
         vmax=Geo_State_Data.positive.max())
 
@@ -47,7 +47,7 @@ def covid():
     colormap.caption = "Positive Covid Tests"
 
     # create the map at given location with a current value for zoom using folium
-    MyMap = folium.Map(location=[48, -102], zoom_start=3, tiles='CartoDB dark_matter')
+    MyMap = folium.Map(location=[48, -102], zoom_start=3, min_zoom=3, max_zoom=10, tiles='CartoDB dark_matter', prefer_canvas=True)
 
     # map layer that shows the colors correlating to positive results
     Positive_Layer = folium.GeoJson(
@@ -55,7 +55,7 @@ def covid():
         name='Positive Tests',
         style_function=lambda feature: {
             'fillColor': colordict[feature['id']],
-            'fillOpacity': 0.8,
+            'fillOpacity': 0.7,
             'color': 'black',
             'weight': 1,
         }
