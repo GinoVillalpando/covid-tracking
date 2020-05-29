@@ -1,8 +1,7 @@
-svg:not(:root){
-    width: 86vw!important;
-    height: 40!important;
+@media (max-width: 992px){
+    svg:not(:root){
+        width: 86vw!important;
+        height: 40!important;
+    }
 }
 
-body {
-    color: white!important;
-}
