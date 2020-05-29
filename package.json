@@ -1,17 +1,16 @@
 {
-    "name": "covid-tracking",
-    "version": "1.0.0",
-    "description": "COVID-19 Tracker for the US",
-    "main": "index.js",
-    "scripts": {
-      "deploy": "gh-pages -d Maps"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "homepage":"https://ginovillalpando.github.io/covid-tracking",
-    "dependencies": {
-      "gh-pages": "^2.2.0"
-    }
+  "name": "covid-tracking",
+  "version": "1.0.0",
+  "description": "COVID-19 Tracker for the US",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gh-pages -d Maps"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://ginovillalpando.github.io/covid-tracking",
+  "dependencies": {
+    "gh-pages": "^2.2.0"
   }
-  
+}
