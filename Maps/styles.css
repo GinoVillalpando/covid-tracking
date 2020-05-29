@@ -8,3 +8,7 @@
 .leaflet-container .leaflet-control-attribution {
     display: none!important;
 }
+
+text {
+    color: white!important;
+}

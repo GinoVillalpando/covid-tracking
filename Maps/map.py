@@ -73,7 +73,7 @@ def covid():
         },
         tooltip=folium.GeoJsonTooltip(
             fields=['name','positive', 'negative', 'total', 'death'],
-            aliases=['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths'],
+            aliases=['<div style="background-color: #a717a7; color: white; padding: 2px; border: 1px solid black; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
             localize=True),
         highlight_function=lambda feature: {
             'fillColor': 'white',
