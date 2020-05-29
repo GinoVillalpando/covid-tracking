@@ -1,0 +1,8 @@
+svg:not(:root){
+    width: 86vw!important;
+    height: 40!important;
+}
+
+body {
+    color: white!important;
+}
