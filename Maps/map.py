@@ -49,7 +49,7 @@ def covid():
     # create the map at given location with a current value for zoom using folium
     MyMap = folium.Map( location=[48, -102], 
                         zoom_start=3, 
-                        min_zoom=3, 
+                        min_zoom=2, 
                         max_zoom=5,
                         max_lon=32.213156,
                         max_bounds=True,
