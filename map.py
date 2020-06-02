@@ -50,7 +50,8 @@ def covid():
     MyMap = folium.Map( location=[48, -102], 
                         zoom_start=3, 
                         min_zoom=3, 
-                        max_zoom=5, 
+                        max_zoom=5,
+                        max_lon=32.213156,
                         max_bounds=True,
                         tiles='CartoDB dark_matter', 
                         prefer_canvas=True)
