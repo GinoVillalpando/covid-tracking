@@ -36,8 +36,8 @@ def covid():
 
 
     colormap = cm.LinearColormap(colors=colors,
-        vmin=Geo_State_Data.positive.min(),
-        vmax=Geo_State_Data.positive.max())
+                                 vmin=Geo_State_Data.positive.min(),
+                                 vmax=Geo_State_Data.positive.max())
 
 
     # Create a dictionary of colors because 'id' is the only property of the feature available when styling
@@ -51,9 +51,7 @@ def covid():
                         zoom_start=3, 
                         min_zoom=3, 
                         max_zoom=5, 
-                        max_bounds=True, 
-                        # min_lat=53.278353,
-                        # max_lon=171.463029,
+                        max_bounds=True,
                         tiles='CartoDB dark_matter', 
                         prefer_canvas=True)
 
@@ -75,14 +73,15 @@ def covid():
         name='States',
         style_function=lambda feature: {
             'fillColor': 'black',
-            'fillOpacity': 0,
-            'color': 'black',
+            'fillOpacity': 0.1,
+            'color': 'white',
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
             fields=['name','positive', 'negative', 'total', 'death'],
-            aliases=['<div style="background-color: #a717a7; color: white; padding: 2px; border: 1px solid black; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
-            localize=True),
+            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
+            localize=True,
+            ),
         highlight_function=lambda feature: {
             'fillColor': 'white',
             'fillOpacity': 0.5,
