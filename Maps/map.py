@@ -47,7 +47,15 @@ def covid():
     colormap.caption = "Positive Covid Tests"
 
     # create the map at given location with a current value for zoom using folium
-    MyMap = folium.Map(location=[48, -102], zoom_start=3, min_zoom=3, max_zoom=10, tiles='CartoDB dark_matter', prefer_canvas=True)
+    MyMap = folium.Map( location=[48, -102], 
+                        zoom_start=3, 
+                        min_zoom=3, 
+                        max_zoom=5, 
+                        max_bounds=True, 
+                        # min_lat=53.278353,
+                        # max_lon=171.463029,
+                        tiles='CartoDB dark_matter', 
+                        prefer_canvas=True)
 
     # map layer that shows the colors correlating to positive results
     Positive_Layer = folium.GeoJson(
@@ -83,7 +91,7 @@ def covid():
         }
     ).add_to(MyMap)
 
-    folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap').add_to(MyMap)
+    folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap', min_zoom=3, max_zoom=5).add_to(MyMap)
 
     # add colormap to the map 
     MyMap.add_child(colormap)
