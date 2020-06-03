@@ -51,7 +51,7 @@ def covid():
                         zoom_start=3, 
                         min_zoom=2, 
                         max_zoom=5,
-                        max_lon=32.213156,
+                        max_lon=-41.949395,
                         max_bounds=True,
                         tiles='CartoDB dark_matter', 
                         prefer_canvas=True)
