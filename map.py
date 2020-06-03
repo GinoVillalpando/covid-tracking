@@ -73,9 +73,9 @@ def covid():
         Geo_State_Data,
         name='States',
         style_function=lambda feature: {
-            'fillColor': 'black',
+            'fillColor': 'white',
             'fillOpacity': 0.1,
-            'color': 'white',
+            'color': 'black',
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
