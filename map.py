@@ -9,7 +9,7 @@ import branca.colormap as cm
 import schedule
 
 def covid():
-    states = 'https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/us-states.json'
+    states = os.path.join('us-states.json')
     geostate = geopandas.read_file(states, driver='GeoJSON')
     url = 'https://covidtracking.com/api/v1/states' 
     covid_data = pd.read_csv(f'{url}/current.csv')
@@ -44,7 +44,7 @@ def covid():
     colordict = Geo_State_Data['positive'].apply(colormap)
 
     # name of legend
-    colormap.caption = "Positive Covid Tests"
+    colormap.caption = "Positive COVID-19 Tests"
 
     # create the map at given location with a current value for zoom using folium
     MyMap = folium.Map( location=[48, -102], 
@@ -96,8 +96,13 @@ def covid():
     # add colormap to the map 
     MyMap.add_child(colormap)
 
+
     # add layercontrol that will disable/enable choropleth or tooltips
     folium.LayerControl().add_to(MyMap)
+
+    styles = folium.CssLink('styles.css').add_to(MyMap)
+
+    print(styles)
 
     # create the maps and insert into a html file
     MyMap.save('index.html')
