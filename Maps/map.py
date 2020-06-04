@@ -8,6 +8,8 @@ import geopandas
 import branca.colormap as cm 
 import schedule
 
+from bs4 import BeautifulSoup
+
 def covid():
     states = os.path.join('us-states.json')
     geostate = geopandas.read_file(states, driver='GeoJSON')
@@ -96,19 +98,27 @@ def covid():
     # add colormap to the map 
     MyMap.add_child(colormap)
 
-
     # add layercontrol that will disable/enable choropleth or tooltips
     folium.LayerControl().add_to(MyMap)
-
-    styles = folium.CssLink('styles.css').add_to(MyMap)
-
-    print(styles)
 
     # create the maps and insert into a html file
     MyMap.save('index.html')
 
+    # MyMap.add_child(folium.CssLink('./styles.css'))
+ 
+    
 # execute the script
 covid()
+
+soup = BeautifulSoup(open('../Maps/index.html'), features="html.parser")
+meta = soup.find('meta')
+css = soup.new_tag('link')
+css['rel'] = "stylesheet"
+css['href'] = "styles.css"
+meta.insert_after(css)
+
+print(soup)
+
 
 # execute the script everyday
 # schedule.every(10).seconds.do(covid)
