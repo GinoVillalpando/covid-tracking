@@ -96,8 +96,13 @@ def covid():
     # add colormap to the map 
     MyMap.add_child(colormap)
 
+
     # add layercontrol that will disable/enable choropleth or tooltips
     folium.LayerControl().add_to(MyMap)
+
+    styles = folium.CssLink('styles.css').add_to(MyMap)
+
+    print(styles)
 
     # create the maps and insert into a html file
     MyMap.save('index.html')
