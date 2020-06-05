@@ -110,14 +110,15 @@ def covid():
 # execute the script
 covid()
 
-soup = BeautifulSoup(open('../Maps/index.html'), features="html.parser")
-meta = soup.find('meta')
+soup = BeautifulSoup(open('index.html'), features="html.parser")
+script = soup.find('script')
 css = soup.new_tag('link')
 css['rel'] = "stylesheet"
 css['href'] = "styles.css"
-meta.insert_after(css)
+script.insert_after(css)
 
-print(soup)
+with open("index.html") as file:
+    file.write("index.html")
 
 
 # execute the script everyday
