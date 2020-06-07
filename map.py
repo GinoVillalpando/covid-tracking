@@ -110,15 +110,15 @@ def covid():
 # execute the script
 covid()
 
-soup = BeautifulSoup(open('index.html'), features="html.parser")
-script = soup.find('script')
-css = soup.new_tag('link')
-css['rel'] = "stylesheet"
-css['href'] = "styles.css"
-script.insert_after(css)
+# soup = BeautifulSoup(open('index.html'), features="html.parser")
+# script = soup.find('script')
+# css = soup.new_tag('link')
+# css['rel'] = "stylesheet"
+# css['href'] = "styles.css"
+# script.insert_after(css)
 
-with open("index.html") as file:
-    file.write("index.html")
+# with open("index.html") as file:
+#     file.write("index.html")
 
 
 # execute the script everyday
