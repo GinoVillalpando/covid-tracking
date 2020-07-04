@@ -43,9 +43,12 @@
     background: #333!important;
     color: #eeeeee!important
 }
-
-svg:not(:root){
-    fill: white !important;
-    font-size: 1.5rem;
-    min-width: 115%;
+@media (min-width: 992px) {
+    svg:not(:root){
+        fill: white !important;
+        font-size: 1.2rem;
+        min-width: 115%;
+        letter-spacing: 0.1em;
+        margin-right: 75rem;
+    }
 }
