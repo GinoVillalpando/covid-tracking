@@ -7,8 +7,18 @@ import os
 import geopandas
 import branca.colormap as cm 
 import schedule
+import json
 
 from bs4 import BeautifulSoup
+from decimal import Decimal
+from decimal import getcontext
+
+class CustomJsonEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super(CustomJsonEncoder, self).default(obj)
 
 def covid():
     states = os.path.join('us-states.json')
@@ -44,6 +54,15 @@ def covid():
 
     # Create a dictionary of colors because 'id' is the only property of the feature available when styling
     colordict = Geo_State_Data['positive'].apply(colormap)
+
+    
+    # for loop that takes the value in positive test results and evaluates the percentage of total population in the USA
+    result = []
+    for value in Geo_State_Data['positive']:
+        New_value = int(value) / 328239523
+        result.append(json.dumps(Decimal("{0:.4f}".format(New_value * 100)), cls=CustomJsonEncoder) + '%')       
+     
+    Geo_State_Data["Percentile of USA"] = result
 
     # name of legend
     colormap.caption = "Positive COVID-19 Tests"
@@ -81,8 +100,8 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name','positive', 'negative', 'total', 'death'],
-            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
+            fields=['name', 'positive','Percentile of USA', 'negative', 'total', 'death'], 
+            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests','% Infected of Total USA Pop.', 'Negative Tests', 'Total Tests', 'Deaths']],
             localize=True,
             ),
         highlight_function=lambda feature: {
