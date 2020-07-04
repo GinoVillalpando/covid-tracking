@@ -1,5 +1,6 @@
 @media (max-width: 992px){
     svg:not(:root){
+        fill: white !important;
         width: 86vw!important;
         height: 40!important;
     }
@@ -41,4 +42,13 @@
 .leaflet-control-layers {
     background: #333!important;
     color: #eeeeee!important
+}
+@media (min-width: 992px) {
+    svg:not(:root){
+        fill: white !important;
+        font-size: 1.2rem;
+        min-width: 115%;
+        letter-spacing: 0.1em;
+        margin-right: 75rem;
+    }
 }
