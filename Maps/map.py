@@ -45,6 +45,10 @@ def covid():
     # Create a dictionary of colors because 'id' is the only property of the feature available when styling
     colordict = Geo_State_Data['positive'].apply(colormap)
 
+    Divide_Data = Geo_State_Data['positive'] / 328239523
+    Geo_State_Data['Percentile of USA'] = Divide_Data
+
+
     # name of legend
     colormap.caption = "Positive COVID-19 Tests"
 
@@ -81,8 +85,8 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name','positive', 'negative', 'total', 'death'],
-            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
+            fields=['name', 'positive', 'Percentile of USA', 'negative', 'total', 'death'], 
+            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests', 'Percentile of USA', 'Negative Tests', 'Total Tests', 'Deaths']],
             localize=True,
             ),
         highlight_function=lambda feature: {
