@@ -8,27 +8,27 @@ import geopandas
 import branca.colormap as cm 
 import schedule
 import json
+import numpy as np
 
 from bs4 import BeautifulSoup
-from decimal import Decimal
-from decimal import getcontext
+from datetime import date, timedelta
 
-class CustomJsonEncoder(json.JSONEncoder):
+yesterday = date.today() - timedelta(days=1)
+yesterday = yesterday.strftime('%Y%m%d')
+# print(yesterday)
 
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return float(obj)
-        return super(CustomJsonEncoder, self).default(obj)
 
 def covid():
     states = os.path.join('us-states.json')
     geostate = geopandas.read_file(states, driver='GeoJSON')
     url = 'https://covidtracking.com/api/v1/states' 
     covid_data = pd.read_csv(f'{url}/current.csv')
+    daily_covid = pd.read_csv(f'{url}/daily.csv')
 
     # set index for both dataframes 
     geostates = geostate.set_index('id')
     covid_data_indexed = covid_data.set_index('state')
+    daily_covid_indexed = daily_covid.set_index('date')
 
     # combine both state and covid data dataframes 
     Geo_State_Data = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
@@ -58,12 +58,18 @@ def covid():
     
     # for loop that takes the value in positive test results and evaluates the percentage of total population in the USA
     result = []
-    for value in Geo_State_Data['positive']:
-        New_value = int(value) / 328239523
-        result.append(json.dumps(Decimal("{0:.4f}".format(New_value * 100)), cls=CustomJsonEncoder) + '%')       
+    Us_Population = 328239523
+    for value in Geo_State_Data['positive'] / Us_Population:
+        result.append("{0:.4f}".format(value * 100) + '%')
      
     Geo_State_Data["Percentile of USA"] = result
 
+    result2 = []
+    for value in Geo_State_Data['positive'] / Geo_State_Data['total']:
+        result2.append("{0:.2f}".format(value * 100) + '%')
+
+    Geo_State_Data['total percentage'] = result2           
+             
     # name of legend
     colormap.caption = "Positive COVID-19 Tests"
 
@@ -100,8 +106,8 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name', 'positive','Percentile of USA', 'negative', 'total', 'death'], 
-            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State','Positive Tests','% Infected of Total USA Pop.', 'Negative Tests', 'Total Tests', 'Deaths']],
+            fields=['name', 'Percentile of USA', 'positive', 'total percentage', 'negative', 'total', 'death'], 
+            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State', '% Positive of US Population', 'Positive Tests', '% Positive of Total Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
             localize=True,
             ),
         highlight_function=lambda feature: {
@@ -122,13 +128,11 @@ def covid():
 
     # create the maps and insert into a html file
     MyMap.save('index.html')
-
-    # MyMap.add_child(folium.CssLink('./styles.css'))
  
-    
 # execute the script
 covid()
 
+# MyMap.add_child(folium.CssLink('./styles.css'))
 # soup = BeautifulSoup(open('index.html'), features="html.parser")
 # script = soup.find('script')
 # css = soup.new_tag('link')
