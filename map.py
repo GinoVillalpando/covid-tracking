@@ -49,7 +49,8 @@ def covid():
 
     colormap = cm.LinearColormap(colors=colors,
                                  vmin=Geo_State_Data.positive.min(),
-                                 vmax=Geo_State_Data.positive.max())
+                                 vmax=Geo_State_Data.positive.max(),
+                                 caption="Positive COVID-19 Tests".upper())
 
 
     # Create a dictionary of colors because 'id' is the only property of the feature available when styling
@@ -69,9 +70,6 @@ def covid():
         result2.append("{0:.2f}".format(value * 100) + '%')
 
     Geo_State_Data['total percentage'] = result2           
-             
-    # name of legend
-    colormap.caption = "Positive COVID-19 Tests"
 
     # create the map at given location with a current value for zoom using folium
     MyMap = folium.Map( location=[48, -102], 
@@ -107,8 +105,10 @@ def covid():
         },
         tooltip=folium.GeoJsonTooltip(
             fields=['name', 'Percentile of USA', 'positive', 'total percentage', 'negative', 'total', 'death'], 
-            aliases=['<div style="background-color: #a717a7; color: white; padding: 0.5rem; border-radius: 2px;">'+item+'</div>' for item in ['State', '% Positive of US Population', 'Positive Tests', '% Positive of Total Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
+            aliases=['<div class="item-div">'+item.upper()+'</div>' for item in ['State', '% Positive of US Pop.', 'Positive Tests', '% Positive of Total Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
             localize=True,
+            direction="left",
+            offset=(-15, 0)
             ),
         highlight_function=lambda feature: {
             'fillColor': 'white',
@@ -118,13 +118,10 @@ def covid():
         }
     ).add_to(MyMap)
 
-    folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap', min_zoom=3, max_zoom=5).add_to(MyMap)
+    # folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap', min_zoom=3, max_zoom=5).add_to(MyMap)
 
-    # add colormap to the map 
+    # add legend to the map 
     MyMap.add_child(colormap)
-
-    # add layercontrol that will disable/enable choropleth or tooltips
-    folium.LayerControl().add_to(MyMap)
 
     # create the maps and insert into a html file
     MyMap.save('index.html')
