@@ -3,9 +3,6 @@
 }
 
 .leaflet-tooltip {
-    background: url('https://i.redd.it/me6x265ui2651.png');
-    background-size: cover;
-    background-position: bottom;
     background-color: #222!important;
     border: 1px solid #222!important;
     color: #fff!important;
@@ -43,7 +40,7 @@
     svg:not(:root){
         margin-right: 69rem;
     }
-    .item-div {
+    .leaflet-tooltip {
         letter-spacing: 0.4rem !important;
     }
 }
