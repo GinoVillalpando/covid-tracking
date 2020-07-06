@@ -107,7 +107,6 @@ def covid():
             fields=['name', 'Percentile of USA', 'positive', 'total percentage', 'negative', 'total', 'death'], 
             aliases=['<div class="item-div">'+item.upper()+'</div>' for item in ['State', '% Positive of US Pop.', 'Positive Tests', '% Positive of Total Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
             localize=True,
-            direction="left",
             offset=(-15, 0)
             ),
         highlight_function=lambda feature: {
