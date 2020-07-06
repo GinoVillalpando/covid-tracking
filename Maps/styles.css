@@ -9,6 +9,7 @@
     background-color: #222!important;
     border: 1px solid #222!important;
     color: #fff!important;
+    letter-spacing: 0.2rem;
 }
 
 .leaflet-tooltip-top:before {
@@ -69,6 +70,5 @@ div .leaflet-control-zoom, .leaflet-control-layers, .leaflet-bar {
     color: white;
     padding: 0.5rem;
     border-radius: 2px;
-    letter-spacing: 0.15em;
 }
 
