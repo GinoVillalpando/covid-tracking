@@ -148,7 +148,7 @@ def covid():
     # create the maps and insert into a html file
     MyMap.save('index.html')
 
-    # MyMap.add_child(folium.CssLink('./styles.css'))
+    # creates and imports css and meta tags on html generation
     with open('index.html', 'r') as file:
         html = file.read()
         soup = BeautifulSoup(html, features="html.parser")
@@ -174,18 +174,3 @@ def covid():
  
 # execute the script
 covid()
-
-# MyMap.add_child(folium.CssLink('./styles.css'))
-# soup = BeautifulSoup(open('index.html'), features="html.parser")
-# script = soup.find('script')
-# css = soup.new_tag('link')
-# css['rel'] = "stylesheet"
-# css['href'] = "styles.css"
-# script.insert_after(css)
-
-# with open("index.html") as file:
-#     file.write("index.html")
-
-
-# execute the script everyday
-# schedule.every(10).seconds.do(covid)
