@@ -36,7 +36,7 @@ def covid():
 
 
     # combine both state and covid data dataframes
-    # Yesterday_State_Data = pd.concat([geostates, yesterday_data_indexed], axis=1, join='inner') 
+    Yesterday_State_Data = pd.concat([geostates, yesterday_data_indexed], axis=1, join='inner') 
     Geo_State_Data = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
 
     # quantiles that the colormap uses for color legend
@@ -65,7 +65,7 @@ def covid():
     # variables for loops to evaluate
     Pop_result = []
     Total_result = []
-    # Increase_result = []
+    Increase_result = []
     # Death_result = []
 
     Us_Population = 328239523
