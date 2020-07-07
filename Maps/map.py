@@ -127,8 +127,8 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name','increase percent', 'Percentile of USA', 'positive', 'total percentage', 'negative', 'total', 'death percent', 'death'], 
-            aliases=['<div class="item-div">'+item+'</div>' for item in ['State','Increase % From Yesterday', 'Positive of US Pop. %', 'Positive Tests', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests','Death Rate %', 'Deaths']],
+            fields=['name', 'positive', 'increase percent', 'Percentile of USA', 'total percentage', 'negative', 'total', 'death percent', 'death'], 
+            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday', 'Positive of US Pop. %', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests','Death Rate %', 'Deaths']],
             localize=True,
             offset=(-15, 0)
             ),
