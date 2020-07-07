@@ -147,6 +147,30 @@ def covid():
 
     # create the maps and insert into a html file
     MyMap.save('index.html')
+
+    # MyMap.add_child(folium.CssLink('./styles.css'))
+    with open('index.html', 'r') as file:
+        html = file.read()
+        soup = BeautifulSoup(html, features="html.parser")
+        script = soup.find('script')
+        meta = soup.find('meta')
+        meta_tag = soup.new_tag('meta')
+        title = soup.new_tag('title')
+        ico = soup.new_tag('link')
+        css = soup.new_tag('link')
+        title.string = "Darker COVID-19 Tracker"
+        meta_tag['name'] = "description"
+        meta_tag['content'] = "Coronavirus Tracker - COVID-19 Tracking"
+        ico['rel'] = "icon"
+        ico['href'] = "Images/hospital.ico"
+        css['rel'] = "stylesheet"
+        css['href'] = "styles.css"
+        script.insert_after(css, ico)
+        meta.insert_after(meta_tag, title)
+    with open('index.html', 'w') as file:
+        file.write(str(soup))
+   
+
  
 # execute the script
 covid()
