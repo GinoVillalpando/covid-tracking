@@ -66,7 +66,7 @@ def covid():
     Pop_result = []
     Total_result = []
     Increase_result = []
-    # Death_result = []
+    Death_result = []
 
     Us_Population = 328239523
 
@@ -89,10 +89,10 @@ def covid():
 
     Geo_State_Data['increase percent'] = Increase_result
 
-    # for value in Geo_State_Data['death'] / Geo_State_Data['positive'] * 100:
-    #     Death_result.append("{0:.2f}".format(value) + '%')
+    for value in Geo_State_Data['death'] / Geo_State_Data['positive'] * 100:
+        Death_result.append("{0:.2f}".format(value) + '%')
 
-    # Geo_State_Data['death percent'] = Death_result
+    Geo_State_Data['death percent'] = Death_result
     
     # create the map at given location with a current value for zoom using folium
     MyMap = folium.Map( location=[48, -102], 
