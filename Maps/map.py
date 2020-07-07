@@ -13,9 +13,9 @@ import numpy as np
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
+# creates a variable with yesterday's date
 yesterday = date.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
-# print(yesterday)
 
 
 def covid():
@@ -25,12 +25,18 @@ def covid():
     covid_data = pd.read_csv(f'{url}/current.csv')
     daily_covid = pd.read_csv(f'{url}/daily.csv')
 
+    # create new dataframe with just the rows with the date as yesterday
+    yesterday_data = daily_covid[daily_covid.date == int(yesterday)]
+
+
     # set index for both dataframes 
     geostates = geostate.set_index('id')
     covid_data_indexed = covid_data.set_index('state')
-    daily_covid_indexed = daily_covid.set_index('date')
+    # yesterday_data_indexed = yesterday_data.set_index('state')
 
-    # combine both state and covid data dataframes 
+
+    # combine both state and covid data dataframes
+    # Yesterday_State_Data = pd.concat([geostates, yesterday_data_indexed], axis=1, join='inner') 
     Geo_State_Data = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
 
     # quantiles that the colormap uses for color legend
@@ -46,7 +52,7 @@ def covid():
     #change NY to a specific purple because it's so much worse than everywhere else
     colors = colors[0:-1] + ['#8d3f9c']
 
-
+    # creates legend colormap
     colormap = cm.LinearColormap(colors=colors,
                                  vmin=Geo_State_Data.positive.min(),
                                  vmax=Geo_State_Data.positive.max(),
@@ -56,21 +62,38 @@ def covid():
     # Create a dictionary of colors because 'id' is the only property of the feature available when styling
     colordict = Geo_State_Data['positive'].apply(colormap)
 
-    
-    # for loop that takes the value in positive test results and evaluates the percentage of total population in the USA
-    result = []
+    # variables for loops to evaluate
+    Pop_result = []
+    Total_result = []
+    # Increase_result = []
+    # Death_result = []
+
     Us_Population = 328239523
+
+
+    # for loop that takes the value in positive test results and evaluates the percentage of total population in the USA
     for value in Geo_State_Data['positive'] / Us_Population:
-        result.append("{0:.4f}".format(value * 100) + '%')
-     
-    Geo_State_Data["Percentile of USA"] = result
+        Pop_result.append("{0:.4f}".format(value * 100) + '%')
 
-    result2 = []
+    Geo_State_Data["Percentile of USA"] = Pop_result
+
+    # for loop that divides positive and total tests and evaluates the result to a percentage for all state values
     for value in Geo_State_Data['positive'] / Geo_State_Data['total']:
-        result2.append("{0:.2f}".format(value * 100) + '%')
+        Total_result.append("{0:.2f}".format(value * 100) + '%')
 
-    Geo_State_Data['total percentage'] = result2           
+    Geo_State_Data['total percentage'] = Total_result      
 
+    # for loop that evaluates the percentage increase of positive tests from yesterday's positive results
+    # for value in (Geo_State_Data['positive'] - Yesterday_State_Data['positive']) / Yesterday_State_Data['positive']:
+    #     Increase_result.append("{0:.2f}".format(value * 100) + '%')
+
+    # Geo_State_Data['increase percent'] = Increase_result
+
+    # for value in Geo_State_Data['death'] / Geo_State_Data['positive'] * 100:
+    #     Death_result.append("{0:.2f}".format(value) + '%')
+
+    # Geo_State_Data['death percent'] = Death_result
+    
     # create the map at given location with a current value for zoom using folium
     MyMap = folium.Map( location=[48, -102], 
                         zoom_start=3, 
@@ -104,8 +127,8 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name', 'Percentile of USA', 'positive', 'total percentage', 'negative', 'total', 'death'], 
-            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', '% Positive of US Pop.', 'Positive Tests', '% Positive of Total Tests', 'Negative Tests', 'Total Tests', 'Deaths']],
+            fields=['name','increase percent', 'Percentile of USA', 'positive', 'total percentage', 'negative', 'total', 'death percent', 'death'], 
+            aliases=['<div class="item-div">'+item+'</div>' for item in ['State','Increase % From Yesterday', 'Positive of US Pop. %', 'Positive Tests', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests','Death Rate %', 'Deaths']],
             localize=True,
             offset=(-15, 0)
             ),
