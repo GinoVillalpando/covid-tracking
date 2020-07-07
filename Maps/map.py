@@ -32,7 +32,7 @@ def covid():
     # set index for both dataframes 
     geostates = geostate.set_index('id')
     covid_data_indexed = covid_data.set_index('state')
-    # yesterday_data_indexed = yesterday_data.set_index('state')
+    yesterday_data_indexed = yesterday_data.set_index('state')
 
 
     # combine both state and covid data dataframes
