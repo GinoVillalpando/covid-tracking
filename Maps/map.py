@@ -84,10 +84,10 @@ def covid():
     Geo_State_Data['total percentage'] = Total_result      
 
     # for loop that evaluates the percentage increase of positive tests from yesterday's positive results
-    # for value in (Geo_State_Data['positive'] - Yesterday_State_Data['positive']) / Yesterday_State_Data['positive']:
-    #     Increase_result.append("{0:.2f}".format(value * 100) + '%')
+    for value in (Geo_State_Data['positive'] - Yesterday_State_Data['positive']) / Yesterday_State_Data['positive']:
+        Increase_result.append("{0:.2f}".format(value * 100) + '%')
 
-    # Geo_State_Data['increase percent'] = Increase_result
+    Geo_State_Data['increase percent'] = Increase_result
 
     # for value in Geo_State_Data['death'] / Geo_State_Data['positive'] * 100:
     #     Death_result.append("{0:.2f}".format(value) + '%')
