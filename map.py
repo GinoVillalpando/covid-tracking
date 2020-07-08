@@ -1,11 +1,11 @@
-#   Map that tracks the daily COVID-19 positive cases by each state in the USA 
+#   Map that tracks the daily COVID-19 positive cases by each state in the USA
 #   author: @Gino Villalpando GinoVillalpandoWork@gmail.com in collaboration with Kyla Bendt kylabendt@gmail.com
- 
+
 import folium
 import pandas as pd
 import os
 import geopandas
-import branca.colormap as cm 
+import branca.colormap as cm
 import schedule
 import json
 import numpy as np
@@ -21,35 +21,36 @@ yesterday = yesterday.strftime('%Y%m%d')
 def covid():
     states = os.path.join('us-states.json')
     geostate = geopandas.read_file(states, driver='GeoJSON')
-    url = 'https://covidtracking.com/api/v1/states' 
+    url = 'https://covidtracking.com/api/v1/states'
     covid_data = pd.read_csv(f'{url}/current.csv')
     daily_covid = pd.read_csv(f'{url}/daily.csv')
 
     # create new dataframe with just the rows with the date as yesterday
     yesterday_data = daily_covid[daily_covid.date == int(yesterday)]
 
-
-    # set index for both dataframes 
+    # set index for both dataframes
     geostates = geostate.set_index('id')
     covid_data_indexed = covid_data.set_index('state')
     yesterday_data_indexed = yesterday_data.set_index('state')
 
-
     # combine both state and covid data dataframes
-    Yesterday_State_Data = pd.concat([geostates, yesterday_data_indexed], axis=1, join='inner') 
-    Geo_State_Data = pd.concat([geostates, covid_data_indexed], axis=1, join='inner')
+    Yesterday_State_Data = pd.concat(
+        [geostates, yesterday_data_indexed], axis=1, join='inner')
+    Geo_State_Data = pd.concat(
+        [geostates, covid_data_indexed], axis=1, join='inner')
 
     # quantiles that the colormap uses for color legend
     quantiles = [0, 0.8, 0.85, 0.90, 0.97, 1]
     bins = list(Geo_State_Data['positive'].quantile(quantiles))
 
     # create the colormap with given hex colors
-    Legend_Colors = cm.LinearColormap(colors=['#A2EFFF', '#7C00FF'], vmin=0, vmax=1)
+    Legend_Colors = cm.LinearColormap(
+        colors=['#A2EFFF', '#7C00FF'], vmin=0, vmax=1)
 
-    #colormap returns 8 character values but only accepts 6 characters
+    # colormap returns 8 character values but only accepts 6 characters
     colors = [Legend_Colors(quantile)[0:-2] for quantile in quantiles]
 
-    #change NY to a specific purple because it's so much worse than everywhere else
+    # change NY to a specific purple because it's so much worse than everywhere else
     colors = colors[0:-1] + ['#8d3f9c']
 
     # creates legend colormap
@@ -57,7 +58,6 @@ def covid():
                                  vmin=Geo_State_Data.positive.min(),
                                  vmax=Geo_State_Data.positive.max(),
                                  caption="Positive COVID-19 Tests".upper())
-
 
     # Create a dictionary of colors because 'id' is the only property of the feature available when styling
     colordict = Geo_State_Data['positive'].apply(colormap)
@@ -70,7 +70,6 @@ def covid():
 
     Us_Population = 328239523
 
-
     # for loop that takes the value in positive test results and evaluates the percentage of total population in the USA
     for value in Geo_State_Data['positive'] / Us_Population:
         Pop_result.append("{0:.4f}".format(value * 100) + '%')
@@ -81,7 +80,7 @@ def covid():
     for value in Geo_State_Data['positive'] / Geo_State_Data['total']:
         Total_result.append("{0:.2f}".format(value * 100) + '%')
 
-    Geo_State_Data['total percentage'] = Total_result      
+    Geo_State_Data['total percentage'] = Total_result
 
     # for loop that evaluates the percentage increase of positive tests from yesterday's positive results
     for value in (Geo_State_Data['positive'] - Yesterday_State_Data['positive']) / Yesterday_State_Data['positive']:
@@ -93,16 +92,16 @@ def covid():
         Death_result.append("{0:.2f}".format(value) + '%')
 
     Geo_State_Data['death percent'] = Death_result
-    
+
     # create the map at given location with a current value for zoom using folium
-    MyMap = folium.Map( location=[48, -102], 
-                        zoom_start=3, 
-                        min_zoom=2, 
-                        max_zoom=5,
-                        max_lon=-41.949395,
-                        max_bounds=True,
-                        tiles='CartoDB dark_matter', 
-                        prefer_canvas=True)
+    MyMap = folium.Map(location=[48, -102],
+                       zoom_start=3,
+                       min_zoom=2,
+                       max_zoom=5,
+                       max_lon=-41.949395,
+                       max_bounds=True,
+                       tiles='CartoDB dark_matter',
+                       prefer_canvas=True)
 
     # map layer that shows the colors correlating to positive results
     Positive_Layer = folium.GeoJson(
@@ -127,11 +126,13 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name', 'positive', 'increase percent', 'Percentile of USA', 'total percentage', 'negative', 'total', 'death percent', 'death'], 
-            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday', 'Positive of US Pop. %', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests','Death Rate %', 'Deaths']],
+            fields=['name', 'positive', 'increase percent', 'Percentile of USA',
+                    'total percentage', 'negative', 'total', 'death percent', 'death'],
+            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday',
+                                                                         'Positive of US Pop. %', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests', 'Death Rate %', 'Deaths']],
             localize=True,
             offset=(-15, 0)
-            ),
+        ),
         highlight_function=lambda feature: {
             'fillColor': 'white',
             'fillOpacity': 0.5,
@@ -142,7 +143,7 @@ def covid():
 
     # folium.TileLayer(tiles='OpenStreetMap', name='OpenStreetMap', min_zoom=3, max_zoom=5).add_to(MyMap)
 
-    # add legend to the map 
+    # add legend to the map
     MyMap.add_child(colormap)
 
     # create the maps and insert into a html file
@@ -169,8 +170,7 @@ def covid():
         meta.insert_after(meta_tag, title)
     with open('index.html', 'w') as file:
         file.write(str(soup))
-   
 
- 
+
 # execute the script
 covid()
