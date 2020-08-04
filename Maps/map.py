@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
 # creates a variable with yesterday's date
-yesterday = date.today() - timedelta(days=1)
+yesterday = date.today() - timedelta(days=2)
 yesterday = yesterday.strftime('%Y%m%d')
 
 
@@ -65,8 +65,9 @@ def covid():
     # variables for loops to evaluate
     Pop_result = []
     Total_result = []
-    Increase_result = []
+    Increase_result_percent = []
     Death_result = []
+    Increase_result = []
 
     Us_Population = 328239523
 
@@ -84,10 +85,17 @@ def covid():
 
     # for loop that evaluates the percentage increase of positive tests from yesterday's positive results
     for value in (Geo_State_Data['positive'] - Yesterday_State_Data['positive']) / Yesterday_State_Data['positive']:
-        Increase_result.append("{0:.2f}".format(value * 100) + '%')
+        Increase_result_percent.append("{0:.2f}".format(value * 100) + '%')
 
-    Geo_State_Data['increase percent'] = Increase_result
+    Geo_State_Data['increase percent'] = Increase_result_percent
 
+    # for loop that gets the increase number
+    for value in (Geo_State_Data['positive'] - Yesterday_State_Data['positive']):
+        Increase_result.append(value)
+
+    Geo_State_Data['increase number'] = Increase_result
+
+    # for loop that gets death rate percentage
     for value in Geo_State_Data['death'] / Geo_State_Data['positive'] * 100:
         Death_result.append("{0:.2f}".format(value) + '%')
 
@@ -126,9 +134,9 @@ def covid():
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name', 'positive', 'increase percent', 'Percentile of USA',
+            fields=['name', 'positive', 'increase percent', 'increase number', 'Percentile of USA',
                     'total percentage', 'negative', 'total', 'death percent', 'death'],
-            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday',
+            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday', 'Postive Test Increase Today',
                                                                          'Positive of US Pop. %', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests', 'Death Rate %', 'Deaths']],
             localize=True,
             offset=(-15, 0)
