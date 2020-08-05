@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
 # creates a variable with yesterday's date
-yesterday = date.today() - timedelta(days=2)
+yesterday = date.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
 
 
@@ -100,6 +100,7 @@ def covid():
         Death_result.append("{0:.2f}".format(value) + '%')
 
     Geo_State_Data['death percent'] = Death_result
+
 
     # create the map at given location with a current value for zoom using folium
     MyMap = folium.Map(location=[48, -102],
