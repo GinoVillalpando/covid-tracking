@@ -4,7 +4,7 @@
   "description": "COVID-19 Tracker for the US",
   "main": "index.js",
   "scripts": {
-    "predeploy": "cp CNAME ./Maps",
+    "predeploy": "cp CNAME",
     "deploy": "gh-pages -d Maps"
   },
   "keywords": [],
