@@ -139,8 +139,7 @@ def covid():
                     'total percentage', 'negative', 'total', 'death percent', 'death'],
             aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday', 'Postive Test Increase Today',
                                                                          'Positive of US Pop. %', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests', 'Death Rate %', 'Deaths']],
-            localize=True,
-            offset=(-15, 0)
+            localize=True
         ),
         highlight_function=lambda feature: {
             'fillColor': 'white',
