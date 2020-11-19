@@ -14,10 +14,9 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
 # creates a variable with yesterday's date
-yesterday = date.today() - timedelta(days=1)
+yesterday = date.today() - timedelta(days=2)
 yesterday = yesterday.strftime('%Y%m%d')
 
-# testing git with work wsl
 def covid():
     states = os.path.join('us-states.json')
     geostate = geopandas.read_file(states, driver='GeoJSON')
