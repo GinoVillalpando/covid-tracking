@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from datetime import date, timedelta
 
 # creates a variable with yesterday's date
-yesterday = date.today() - timedelta(days=2)
+yesterday = date.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
 
 def covid():
