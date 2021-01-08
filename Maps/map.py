@@ -21,8 +21,10 @@ def covid():
     states = os.path.join('us-states.json')
     geostate = geopandas.read_file(states, driver='GeoJSON')
     url = 'https://covidtracking.com/api/v1/states'
-    covid_data = pd.read_csv(f'{url}/current.csv')
-    daily_covid = pd.read_csv(f'{url}/daily.csv')
+    covid_data = pd.read_csv(f'{url}/current.csv', index_col=None, na_values=['NA'],
+sep=',',low_memory=False)
+    daily_covid = pd.read_csv(f'{url}/daily.csv', index_col=None, na_values=['NA'],
+sep=',',low_memory=False)
 
     # create new dataframe with just the rows with the date as yesterday
     yesterday_data = daily_covid[daily_covid.date == int(yesterday)]
