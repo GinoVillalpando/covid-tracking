@@ -101,6 +101,8 @@ sep=',',low_memory=False)
         Death_result.append("{0:.2f}".format(value) + '%')
 
     Geo_State_Data['death percent'] = Death_result
+    
+    Geo_State_Data['date'] = date.today().strftime('%m/%d/%Y')
 
 
     # create the map at given location with a current value for zoom using folium
@@ -136,10 +138,10 @@ sep=',',low_memory=False)
             'weight': 1,
         },
         tooltip=folium.GeoJsonTooltip(
-            fields=['name', 'positive', 'increase percent', 'increase number', 'Percentile of USA',
-                    'total percentage', 'negative', 'total', 'death percent', 'death'],
-            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Increase % From Yesterday', 'Postive Test Increase Today',
-                                                                         'Positive of US Pop. %', 'Positive of Total Tests %', 'Negative Tests', 'Total Tests', 'Death Rate %', 'Deaths']],
+            fields=['name', 'positive', 'increase number','total percentage',
+                    'negative', 'total', 'death', 'death percent', 'date'],
+            aliases=['<div class="item-div">'+item+'</div>' for item in ['State', 'Positive Tests', 'Postive Test Increase Today',
+                                                                          'Positive of Total Tests %', 'Negative Tests', 'Total Tests', 'Deaths', 'Death Rate', 'Results As Of']],
             localize=True
         ),
         highlight_function=lambda feature: {
