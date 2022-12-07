@@ -12,6 +12,6 @@
   "homepage": "https://ginovillalpando.github.io/covid-tracking",
   "dependencies": {
     "gh-pages": "^2.2.0",
-    "lint": "^0.7.0"
+    "lint": "^0.8.8"
   }
 }
